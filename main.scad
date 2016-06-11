@@ -12,8 +12,8 @@ unit_witdh = 35;
 hole_width = 30;
 plate_height = 32;
 full_length = (len(coins) + 1) * unit_witdh;
-tickness = 1.5;
-hole_margin = 0.2;
+tickness = 2.0;
+hole_margin = 0.1;
 
 rotate([-90, 0, 0]) {
   difference() {
