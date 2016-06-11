@@ -15,20 +15,27 @@ full_length = (len(coins) + 1) * unit_witdh;
 tickness = 2.0;
 hole_margin = 0.1;
 
-rotate([-90, 0, 0]) {
-  difference() {
-    union() {
-      cube([full_length, plate_height, tickness]);
-      cube([full_length, tickness, 5]);
-    }
+module plate() {
+  union() {
+    cube([full_length, plate_height, tickness]);
+    cube([full_length, tickness, 5]);
+  }
+}
 
-    union() {
-      for(i = [0:len(coins)-1]) {
-        coin = coins[i];
-        translate([(i + 1) * unit_witdh, tickness, -0.5]) {
-          cube([hole_width, coin[1] + hole_margin, tickness + 5]);
-        }
+module holes() {
+  union() {
+    for(i = [0:len(coins)-1]) {
+      coin = coins[i];
+      translate([(i + 1) * unit_witdh, tickness, -0.5]) {
+        cube([hole_width, coin[1] + hole_margin, tickness + 5]);
       }
     }
+  }
+}
+
+rotate([-90, 0, 0]) {
+  difference() {
+    plate();
+    holes();
   }
 }
