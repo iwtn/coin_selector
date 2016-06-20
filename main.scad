@@ -12,7 +12,7 @@ unit_witdh = 35;
 hole_width = 30;
 plate_height = 32;
 full_length = (len(coins) + 1) * unit_witdh;
-tickness = 2.0;
+tickness = 1.5;
 hole_margin = 0.1;
 
 module plate() {
@@ -33,9 +33,7 @@ module holes() {
   }
 }
 
-rotate([-90, 0, 0]) {
-  difference() {
-    plate();
-    holes();
-  }
+difference() {
+  plate();
+  holes();
 }
