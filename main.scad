@@ -3,10 +3,10 @@ function suml(v, i) = suml2(v, len(v) - 1);
 function select(vector,indices) = [ for (index = indices) vector[index] ];
 function index_vector(i) = ([ for(a = [0:i]) a ]);
 
-module plate(coins, tickness, hole_width_margin, guard) {
+module plate(coins, start_plate_size, tickness, hole_width_margin, guard) {
   diameters = [ for (a = coins) a[1] ];
   l = suml(diameters);
-  full_length = l + 30 + hole_width_margin * len(coins) * 2;
+  full_length = l + start_plate_size + hole_width_margin * len(coins) * 2;
   plate_height = max(diameters) + tickness + 3;
 
   union() {
@@ -15,7 +15,7 @@ module plate(coins, tickness, hole_width_margin, guard) {
   }
 }
 
-module holes(coins, tickness, hole_margin, hole_width_margin, guard) {
+module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, guard) {
   union() {
     diameters = [ for (a = coins) a[1] ];
     index_vecs = ([ for(a = [0:len(diameters) - 1]) index_vector(a) ]);
@@ -25,7 +25,7 @@ module holes(coins, tickness, hole_margin, hole_width_margin, guard) {
     for (i = [0:len(coins)-1]) {
       coin = coins[i];
       diameter = coin[1];
-      start_position = 30 - diameter + start_positions[i] + i * hole_width_margin * 2;
+      start_position = start_plate_size - diameter + start_positions[i] + i * hole_width_margin * 2;
       translate([start_position, tickness + guard, -0.5]) {
         cube([diameter + hole_width_margin, diameter + hole_margin - guard, tickness + 5]);
       }
@@ -43,12 +43,13 @@ coins = [
   [500,  26.5, 2.0],
 ];
 
+start_plate_size = 30;
 tickness = 1.5;
 hole_margin = 0.1;
 hole_width_margin = 3;
 guard = 1.5;
 
 difference() {
-  plate(coins, tickness, hole_width_margin, guard);
-  holes(coins, tickness, hole_margin, hole_width_margin, guard);
+  plate(coins, start_plate_size, tickness, hole_width_margin, guard);
+  holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, guard);
 }
