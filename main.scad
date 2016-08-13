@@ -1,24 +1,9 @@
-// value, diameter, tickness
-coins = [
-  [1,    20.0, 1.2],
-  [50,   21.0, 1.7],
-  [5,    22.0, 1.5],
-  [100,  22.6, 1.7],
-  [10,   23.5, 1.5],
-  [500,  26.5, 2.0],
-];
-
-plate_height = 32;
-tickness = 1.5;
-hole_margin = 0.1;
-hole_width_margin = 3;
-
 function suml2(v, i) = (i==0 ? v[i] : v[i] + suml2(v,i-1));
 function suml(v, i) = suml2(v, len(v) - 1);
 function select(vector,indices) = [ for (index = indices) vector[index] ];
 function index_vector(i) = ([ for(a = [0:i]) a ]);
 
-module plate(coins, hole_width_margin, guard) {
+module plate(coins, tickness, plate_height, hole_width_margin, guard) {
   diameters = [ for (a = coins) a[1] ];
   l = suml(diameters);
   full_length = l + 30 + hole_width_margin * len(coins) * 2;
@@ -29,7 +14,7 @@ module plate(coins, hole_width_margin, guard) {
   }
 }
 
-module holes(coins, hole_width_margin, guard) {
+module holes(coins, tickness, hole_margin, hole_width_margin, guard) {
   union() {
     diameters = [ for (a = coins) a[1] ];
     index_vecs = ([ for(a = [0:len(diameters) - 1]) index_vector(a) ]);
@@ -47,8 +32,23 @@ module holes(coins, hole_width_margin, guard) {
   }
 }
 
+// value, diameter, tickness
+coins = [
+  [1,    20.0, 1.2],
+  [50,   21.0, 1.7],
+  [5,    22.0, 1.5],
+  [100,  22.6, 1.7],
+  [10,   23.5, 1.5],
+  [500,  26.5, 2.0],
+];
+
+plate_height = 32;
+tickness = 1.5;
+hole_margin = 0.1;
+hole_width_margin = 3;
 guard = 1.5;
+
 difference() {
-  plate(coins, hole_width_margin, guard);
-  holes(coins, hole_width_margin, guard);
+  plate(coins, tickness, plate_height, hole_width_margin, guard);
+  holes(coins, tickness, hole_margin, hole_width_margin, guard);
 }
