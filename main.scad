@@ -45,7 +45,7 @@ coins = [
 
 start_plate_size = 30;
 tickness = 1.5;
-hole_margin = 0.1;
+hole_margin = 0.15;
 hole_width_margin = 3;
 guard = 1.5;
 
