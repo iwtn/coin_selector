@@ -7,7 +7,7 @@ module plate(coins, start_plate_size, tickness, hole_width_margin, guard) {
   diameters = [ for (a = coins) a[1] ];
   l = suml(diameters);
   full_length = l + start_plate_size + hole_width_margin * len(coins) * 2;
-  plate_height = max(diameters) + tickness + 3;
+  plate_height = max(diameters) + tickness + 5;
 
   union() {
     cube([full_length, plate_height, tickness]);
