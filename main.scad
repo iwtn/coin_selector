@@ -26,8 +26,11 @@ module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, 
       coin = coins[i];
       diameter = coin[1];
       start_position = start_plate_size - diameter + start_positions[i] + i * hole_width_margin * 2;
-      translate([start_position, tickness + guard, -0.5]) {
-        cube([diameter + hole_width_margin, diameter + hole_margin - guard, tickness + 5]);
+      translate([start_position, guard, -0.5]) {
+        cube([diameter, diameter + hole_margin, tickness + 5]);
+      }
+      translate([start_position + diameter, guard + diameter / 2, -0.5]) {
+        cylinder(h=tickness + 5, r=diameter / 2, center=true);
       }
     }
   }
@@ -46,7 +49,7 @@ coins = [
 start_plate_size = 30;
 tickness = 1.5;
 hole_margin = 0.15;
-hole_width_margin = 15;
+hole_width_margin = 10;
 guard = 1.5;
 
 difference() {
