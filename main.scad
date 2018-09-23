@@ -16,23 +16,26 @@ module plate(coins, start_plate_size, tickness, hole_width_margin, guard) {
 }
 
 module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, guard) {
-  union() {
-    diameters = [ for (a = coins) a[1] ];
-    index_vecs = ([ for(a = [0:len(diameters) - 1]) index_vector(a) ]);
-    diameters_vecs = [ for(idxs = index_vecs) select(diameters, idxs) ];
-    start_positions = [ for(dias = diameters_vecs) suml(dias) ];
+  difference() {
+    union() {
+      diameters = [ for (a = coins) a[1] ];
+      index_vecs = ([ for(a = [0:len(diameters) - 1]) index_vector(a) ]);
+      diameters_vecs = [ for(idxs = index_vecs) select(diameters, idxs) ];
+      start_positions = [ for(dias = diameters_vecs) suml(dias) ];
 
-    for (i = [0:len(coins)-1]) {
-      coin = coins[i];
-      diameter = coin[1];
-      start_position = start_plate_size - diameter + start_positions[i] + i * hole_width_margin * 2;
-      translate([start_position, guard, -0.5]) {
-        cube([diameter, diameter + hole_margin, tickness + 5]);
-      }
-      translate([start_position + diameter, guard + diameter / 2, -0.5]) {
-        cylinder(h=tickness + 5, r=diameter / 2, center=true);
+      for (i = [0:len(coins)-1]) {
+        coin = coins[i];
+        diameter = coin[1];
+        start_position = start_plate_size - diameter + start_positions[i] + i * hole_width_margin * 2;
+        translate([start_position, guard, -0.5]) {
+          cube([diameter, diameter + hole_margin, tickness + 5]);
+        }
+        translate([start_position + diameter, guard + diameter / 2, -0.5]) {
+          cylinder(h=tickness + 5, r=diameter / 2, center=true);
+        }
       }
     }
+    cube([300, guard + tickness, 10]);
   }
 }
 
