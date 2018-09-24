@@ -15,6 +15,15 @@ module plate(coins, start_plate_size, tickness, hole_width_margin, guard) {
   }
 }
 
+module coin_hole(start_position, diameter, hole_margin, tickness, hole_width_margin, guard) {
+  translate([start_position, guard, -0.5]) {
+    cube([diameter / 2 + 5, diameter + hole_margin, tickness + 5]);
+  }
+  translate([start_position + diameter / 2 + 5, guard + (diameter + hole_margin) / 2, -0.5]) {
+    cylinder(h=tickness + 5, r=(diameter + hole_margin) / 2 , center=true, $fn=720);
+  }
+}
+
 module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, guard) {
   difference() {
     union() {
@@ -27,12 +36,7 @@ module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, 
         coin = coins[i];
         diameter = coin[1];
         start_position = start_plate_size - diameter + start_positions[i] + i * hole_width_margin * 2;
-        translate([start_position, guard, -0.5]) {
-          cube([diameter / 2 + 5, diameter + hole_margin, tickness + 5]);
-        }
-        translate([start_position + diameter / 2 + 5, guard + (diameter + hole_margin) / 2, -0.5]) {
-          cylinder(h=tickness + 5, r=(diameter + hole_margin) / 2 , center=true, $fn=720);
-        }
+        coin_hole(start_position, diameter, hole_margin, tickness, hole_width_margin, guard);
       }
     }
     cube([300, guard + tickness, 10]);
