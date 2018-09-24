@@ -30,8 +30,8 @@ module holes(coins, start_plate_size, tickness, hole_margin, hole_width_margin, 
         translate([start_position, guard, -0.5]) {
           cube([diameter / 2 + 5, diameter + hole_margin, tickness + 5]);
         }
-        translate([start_position + diameter / 2 + 5, guard + diameter / 2, -0.5]) {
-          cylinder(h=tickness + 5, r=diameter / 2 + hole_margin, center=true);
+        translate([start_position + diameter / 2 + 5, guard + (diameter + hole_margin) / 2, -0.5]) {
+          cylinder(h=tickness + 5, r=(diameter + hole_margin) / 2 , center=true, $fn=720);
         }
       }
     }
